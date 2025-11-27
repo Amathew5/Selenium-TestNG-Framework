@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="OrangeHRMSuite" parallel="classes" thread-count="5">
+	<listeners>
+		<listener class-name="com.orangehrm.listeners.TestListener"></listener>
+	</listeners>
+	<test name="OrangeHRMTests">
+		<classes>
+			<class name="com.orangehrm.test.LoginTest"></class>
+			<class name="com.orangehrm.test.InvalidLoginTest"></class>
+			<!--<class name="com.orangehrm.test.SearchEmployee"></class> -->
+			<class name="com.orangehrm.test.ApiTest"></class>
+		</classes>
+	</test>
+</suite>
