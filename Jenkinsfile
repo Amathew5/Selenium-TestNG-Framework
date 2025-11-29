@@ -12,24 +12,18 @@ pipeline {
 			}
 		}
 		
-		stage('Build'){
+		stage('Build and Test'){
 			steps{
 				bat 'mvn clean install'
-			}
-		}
-		
-		stage('Test'){
-			steps{
-				bat 'mvn test'
 			}
 		}
 		
 		stage('Reports'){
 			steps{
 				publishHTML(target:[
-					reportDir: 'src/test/resources/ExtendReport',
-					reportFiles: 'ExtendReport.html',
-					reportName: 'HTML Extend Report'
+					reportDir: 'src/test/resources/ExtentReport',
+					reportFiles: 'ExtentReport.html',
+					reportName: 'HTML Extent Report'
 				])
 			}
 		}
