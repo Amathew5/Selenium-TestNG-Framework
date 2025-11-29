@@ -29,7 +29,7 @@ pipeline {
 				publishHTML(target:[
 					reportDir: 'src/test/resources/ExtentReport',
 					reportFiles: 'ExtentReport.html',
-					reportnAME: 'Extent Report'
+					reportName: 'Extent Report'
 				])
 			}
 		}
