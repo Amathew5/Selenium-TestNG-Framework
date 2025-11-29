@@ -65,7 +65,7 @@ pipeline {
 				</body>
 				</html>
 				""",
-				mimrtype: 'text/html',
+				mimetype: 'text/html',
 				attachLog: true
 			)
 		}
@@ -94,7 +94,7 @@ pipeline {
 				</body>
 				</html>
 				""",
-				mimrtype: 'text/html',
+				mimetype: 'text/html',
 				attachLog: true
 			)
 		}
