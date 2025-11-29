@@ -38,7 +38,7 @@ pipeline {
 	post{
 		always{
 			archiveArtifacts artifacts: '**/src/test/resources/ExtentReport/*.html', fingerprint: true
-			junit 'target/surefire-reports/8.xml'
+			junit 'target/surefire-reports/*.xml'
 		}
 		
 		success{
