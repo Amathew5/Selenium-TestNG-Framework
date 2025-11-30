@@ -5,7 +5,23 @@ pipeline {
 		maven 'maven-3.9.9'
 	}
 	
+	environment {
+		COMPOSE_PATH = "${WORKSPACE}/docker"
+		SELEINUM_GRID_LOCAL = "true"
+		SELEINUM_GRID_DOCKER = "true"
+	}
+	
 	stages{
+		stage('Start Selenium Grid via Docker Compose')
+			steps {
+				script {
+					echo "Starting selenium drid with docker compose"
+					bat "docker compose -f $c -d"
+					echo "waiting fro selenium grid to be ready..."
+					sleep 120
+				}
+			}
+			
 		stage('Checkout'){
 			steps{
 				git branch: 'main', url: 'https://github.com/Amathew5/Selenium-TestNG-Framework.git'
@@ -14,7 +30,16 @@ pipeline {
 		
 		stage('Build and Test'){
 			steps{
-				bat 'mvn clean install'
+				bat 'mvn clean install -DseleniumGrid=true'
+			}
+		}
+		
+		stage('Stop seleniumgrid'){
+			steps{
+				script{
+					echo "Stopping selenium grid"
+					bat "docker compose -f ${COMPOSE_PATH}\\docker-compose.yml down"
+				}
 			}
 		}
 		

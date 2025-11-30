@@ -155,7 +155,17 @@ public class BaseClass {
 		getDriver().manage().window().setSize(new Dimension(1920, 1080));
 
 		try {
-			getDriver().get(prop.getProperty("url"));
+			boolean seleniumGrid = Boolean.parseBoolean(prop.getProperty("seleniumGrid"));
+			boolean seleniumGridDocker = Boolean.parseBoolean(prop.getProperty("seleniumGridDocker"));
+			if(seleniumGrid)
+				if(seleniumGridDocker) {
+					getDriver().get(prop.getProperty("url_grid_docker"));
+				}else {
+					getDriver().get(prop.getProperty("url_grid_local"));
+				}
+			else {
+				getDriver().get(prop.getProperty("url_base"));				
+			}
 			logger.info("Navigate to url");
 		} catch (Exception e) {
 			logger.error("Navigate to url");
