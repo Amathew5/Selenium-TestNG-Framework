@@ -6,7 +6,7 @@ pipeline {
 	}
 	
 	environment {
-		COMPOSE_PATH = "${WORKSPACE}/docker"
+		COMPOSE_PATH = "${WORKSPACE}\\docker"
 		SELEINUM_GRID_LOCAL = "true"
 		SELEINUM_GRID_DOCKER = "true"
 	}
