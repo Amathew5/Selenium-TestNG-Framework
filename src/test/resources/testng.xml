@@ -3,11 +3,30 @@
 	<listeners>
 		<listener class-name="com.orangehrm.listeners.TestListener"></listener>
 	</listeners>
-	<test name="OrangeHRMTests">
+	<test name="OrangeHRMTests_Chrome">
+		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.orangehrm.test.LoginTest"></class>
 			<class name="com.orangehrm.test.InvalidLoginTest"></class>
-			<!--<class name="com.orangehrm.test.SearchEmployee"></class> -->
+			<!--<class name=" com.orangehrm.test.SearchEmployee"></class> -->
+			<class name="com.orangehrm.test.ApiTest"></class>
+		</classes>
+	</test>
+	<test name=" OrangeHRMTests_Firefox">
+		<parameter name="browser" value="firefox" />
+		<classes>
+			<class name="com.orangehrm.test.LoginTest"></class>
+			<class name="com.orangehrm.test.InvalidLoginTest"></class>
+			<!--<class name=" com.orangehrm.test.SearchEmployee"></class> -->
+			<class name="com.orangehrm.test.ApiTest"></class>
+		</classes>
+	</test>
+	<test name=" OrangeHRMTests_Edge">
+		<parameter name="browser" value="edge" />
+		<classes>
+			<class name="com.orangehrm.test.LoginTest"></class>
+			<class name="com.orangehrm.test.InvalidLoginTest"></class>
+			<!--<class name=" com.orangehrm.test.SearchEmployee"></class> -->
 			<class name="com.orangehrm.test.ApiTest"></class>
 		</classes>
 	</test>

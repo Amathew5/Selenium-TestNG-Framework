@@ -2,6 +2,8 @@ package com.orangehrm.base;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +18,11 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Parameters;
 import org.testng.asserts.SoftAssert;
 
 import com.orangehrm.actiondriver.ActionDriver;
@@ -44,9 +48,10 @@ public class BaseClass {
 
 	// Method for initial setup
 	@BeforeMethod
-	public synchronized void setup() throws IOException {
+	@Parameters("browser")
+	public synchronized void setup(String browser) throws IOException {
 		logger.info("Setting up webdriver:" + this.getClass().getSimpleName());
-		launchBrowser();
+		launchBrowser(browser);
 		navigateToUrl();
 		staticWait(3);
 
@@ -56,40 +61,85 @@ public class BaseClass {
 	}
 
 	// Method to launch browser
-	private void launchBrowser() {
-		String browser = prop.getProperty("browser");
-
-		if (browser.equalsIgnoreCase("chrome")) {
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--headless=new");
-			options.addArguments("--window-size=1920,1080");  // REQUIRED
-			options.addArguments("--force-device-scale-factor=1");
-			options.addArguments("--disable-notification");
-			options.addArguments("--disable-gpu");
-			options.addArguments("--disable-dev-shm-usage");
-			options.addArguments("--no-sandbox");
-			driver.set(new ChromeDriver(options));
-		}			
-		else if (browser.equalsIgnoreCase("firefox")) {
-			FirefoxOptions options = new FirefoxOptions();
-			options.addArguments("--headless");// Run firefox in headless mode
-			options.addArguments("--disable-gpu"); // Disable GPU for headless mode
-			options.addArguments("--disable-notification");
-			options.addArguments("--no-sandbox");
-			options.addArguments("--disable-dev-shm-usage");
-			driver.set(new FirefoxDriver(options));
-		}			
-		else if (browser.equalsIgnoreCase("edge")) {
-			EdgeOptions options = new EdgeOptions();
-			options.addArguments("--headless");// Run Edge in headless mode
-			options.addArguments("--disable-gpu"); // Disable GPU for headless mode
-			options.addArguments("--disable-notification");
-			options.addArguments("--no-sandbox");
-			options.addArguments("--disable-dev-shm-usage");
-			driver.set(new EdgeDriver(options));
-		}
-		else {
-			throw new IllegalArgumentException("Browser not supported:" + browser);
+	private void launchBrowser(String browser) {
+		//String browser = prop.getProperty("browser");
+		
+		boolean seleniumGrid = Boolean.parseBoolean(prop.getProperty("seleniumGrid"));
+		String gridUrl = prop.getProperty("hubUrl");
+		
+		if(seleniumGrid) {
+			try {
+				if(browser.equalsIgnoreCase("chrome")) {
+					ChromeOptions options = new ChromeOptions();
+					options.addArguments("--headless=new");
+					options.addArguments("--window-size=1920,1080");  // REQUIRED
+					options.addArguments("--force-device-scale-factor=1");
+					options.addArguments("--disable-notification");
+					options.addArguments("--disable-gpu");
+					options.addArguments("--disable-dev-shm-usage");
+					options.addArguments("--no-sandbox");
+					driver.set(new RemoteWebDriver(new URL(gridUrl),options));
+				}
+				else if (browser.equalsIgnoreCase("firefox")) {
+					FirefoxOptions options = new FirefoxOptions();
+					options.addArguments("--headless");// Run firefox in headless mode
+					options.addArguments("--disable-gpu"); // Disable GPU for headless mode
+					options.addArguments("--disable-notification");
+					options.addArguments("--no-sandbox");
+					options.addArguments("--disable-dev-shm-usage");
+					driver.set(new RemoteWebDriver(new URL(gridUrl),options));
+				}			
+				else if (browser.equalsIgnoreCase("edge")) {
+					EdgeOptions options = new EdgeOptions();
+					options.addArguments("--headless");// Run Edge in headless mode
+					options.addArguments("--disable-gpu"); // Disable GPU for headless mode
+					options.addArguments("--disable-notification");
+					options.addArguments("--no-sandbox");
+					options.addArguments("--disable-dev-shm-usage");
+					driver.set(new RemoteWebDriver(new URL(gridUrl),options));
+				}
+				else {
+					throw new IllegalArgumentException("Browser: "+browser+" Not Supported.");
+				}
+			}catch (MalformedURLException e) {
+					throw new RuntimeException("Invalide grid url", e);
+			}
+			
+		} else {
+			
+			if (browser.equalsIgnoreCase("chrome")) {
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--headless=new");
+				options.addArguments("--window-size=1920,1080");  // REQUIRED
+				options.addArguments("--force-device-scale-factor=1");
+				options.addArguments("--disable-notification");
+				options.addArguments("--disable-gpu");
+				options.addArguments("--disable-dev-shm-usage");
+				options.addArguments("--no-sandbox");
+				driver.set(new ChromeDriver(options));
+			}			
+			else if (browser.equalsIgnoreCase("firefox")) {
+				FirefoxOptions options = new FirefoxOptions();
+				options.addArguments("--headless");// Run firefox in headless mode
+				options.addArguments("--disable-gpu"); // Disable GPU for headless mode
+				options.addArguments("--disable-notification");
+				options.addArguments("--no-sandbox");
+				options.addArguments("--disable-dev-shm-usage");
+				driver.set(new FirefoxDriver(options));
+			}			
+			else if (browser.equalsIgnoreCase("edge")) {
+				EdgeOptions options = new EdgeOptions();
+				options.addArguments("--headless");// Run Edge in headless mode
+				options.addArguments("--disable-gpu"); // Disable GPU for headless mode
+				options.addArguments("--disable-notification");
+				options.addArguments("--no-sandbox");
+				options.addArguments("--disable-dev-shm-usage");
+				driver.set(new EdgeDriver(options));
+			}
+			else {
+				throw new IllegalArgumentException("Browser not supported:" + browser);
+			}
+			
 		}
 		
 		ExtentManager.registerDriver(getDriver());
