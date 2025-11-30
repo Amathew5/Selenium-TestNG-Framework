@@ -12,7 +12,7 @@ pipeline {
 	}
 	
 	stages{
-		stage('Start Selenium Grid via Docker Compose')
+		stage('Start Selenium Grid via Docker Compose'){
 			steps {
 				script {
 					echo "Starting selenium drid with docker compose"
@@ -21,6 +21,7 @@ pipeline {
 					sleep 120
 				}
 			}
+		}
 			
 		stage('Checkout'){
 			steps{
